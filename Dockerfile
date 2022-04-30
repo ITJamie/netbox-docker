@@ -28,9 +28,11 @@ RUN apk add --no-cache \
 
 # Build libcrc32c for google-crc32c python module
 RUN git clone https://github.com/google/crc32c \
+# hadolint ignore=DL3003
     && cd crc32c \
     && git submodule update --init --recursive \
     && mkdir build \
+# hadolint ignore=DL3003
     && cd build \
     && cmake \
         -DCMAKE_BUILD_TYPE=Release \
@@ -98,6 +100,7 @@ WORKDIR /opt/netbox/netbox
 RUN mkdir -p static /opt/unit/state/ /opt/unit/tmp/ \
       && chown -R unit:root media /opt/unit/ \
       && chmod -R g+w media /opt/unit/ \
+# hadolint ignore=DL3003
       && cd /opt/netbox/ && SECRET_KEY="dummy" /opt/netbox/venv/bin/python -m mkdocs build \
           --config-file /opt/netbox/mkdocs.yml --site-dir /opt/netbox/netbox/project-static/docs/ \
       && SECRET_KEY="dummy" /opt/netbox/venv/bin/python /opt/netbox/netbox/manage.py collectstatic --no-input
